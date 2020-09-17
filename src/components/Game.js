@@ -12,7 +12,8 @@ class Game extends React.Component {
       pancakes: [],
       cooked: 0,
       burnt: 0,
-      raw: 0
+      raw: 0,
+      preferredCookTime: 2
     };
   }
 
@@ -20,7 +21,7 @@ class Game extends React.Component {
   componentDidMount = () => {
     // code runs when component mounts
     this.setCurrentTime()
-    
+
   }
   
   setCurrentTime = () => {
@@ -44,9 +45,16 @@ class Game extends React.Component {
     });
   }
 
+  handleChange = (event) => {
+    let newTime = event.target.value
+    this.setState({
+      preferredCookTime: newTime
+    })
+  }
+
   render() {
     const { pancakes, burnt, cooked, raw, time } = this.state;
-    const pans = pancakes.map((pancake, index) => <Pancake key={index} id={pancake} takeItOff={this.takeItOff} />);
+    const pans = pancakes.map((pancake, index) => <Pancake key={index} id={pancake} takeItOff={this.takeItOff} preferredCookTime={this.state.preferredCookTime}/>);
 
     return (
       <div className="Game">
@@ -62,6 +70,8 @@ class Game extends React.Component {
         >
           New pancake!
         </button>
+        <br />
+        <input type="text" onChange={this.handleChange} value={this.state.preferredCookTime}/>
         <div className="Game__pancakes">{pans}</div>
       </div>
     )
